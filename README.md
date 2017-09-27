@@ -1,31 +1,45 @@
-# tensorflow-tutorial
+# Tensorflow-tutorial
 ## About Project
 
 > Build & Analysis Deep Neural Network from scrach with tensorflow. Also, we want to explain the ideas of DL by implementing it, such as regulation/activation/convNet/pool .etc. If you have any suggestions, don't hesitate to contact with me. 
 
+## Table Of Content
+
 ### Build Deep Neural Network
 
-- [ ] Tensorflow
-      - [ ] Variable
-      - [ ] Constant
-      - [ ] Session
-- [ ] Tasks
-      - [x] Classification
-      - [ ] Regression
-- [ ] Overfitting
-      - [x] Dropout
-      - [ ] L2
-      - [ ] L1 regulation
-- [ ] Activation Function
-      - [ ] Softmax
-      - [ ] ReLU
-      - [ ] Sigmoid
-- [ ] Model
-      - [x] MLP
-      - [ ] CNN
-      - [ ] RNN
-      - [ ] LSTM
-- [ ] Coming soon...
+### Tensorflow
+
+- [ ] Variable
+      
+- [ ] Constant
+      
+- [ ] Session
+
+
+### Model
+- [x] MLP
+- [ ] CNN
+- [x] RNN
+- [ ] LSTM
+
+### Tasks
+- [x] Classification
+- [ ] Regression
+
+### Overfitting
+- [x] Dropout
+- [ ] L2
+- [ ] L1 regulation
+
+### Learning Rate
+- [ ] decay
+
+### Activation Function
+- [ ] Softmax
+- [ ] ReLU
+- [ ] Sigmoid
+
+### Coming soon...
 
 
 ### Analysis Deep Neural Network
