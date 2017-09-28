@@ -1,5 +1,5 @@
+# encoding=utf-8
 import tensorflow as tf
-
 from tensorflow.examples.tutorials.mnist import input_data
 
 # this is data
@@ -44,25 +44,38 @@ def RNN(X, weights, biases):
     :return:
     """
     # hidden layer for input to cell
-    X = tf.reshape(X, [-1, n_inputs])
-    X_in = tf.matmul(X, weights['in']) + biases['in']
-    X_in = tf.reshape(X_in, [batch_size, n_steps, n_inputs])
+    X = tf.reshape(X, [-1, n_inputs])  # X(N*T, D)
+    X_in = tf.matmul(X, weights['in']) + biases['in'] #X_in(N*T, H)
+    X_in = tf.reshape(X_in, [batch_size, n_steps, n_hidden_unis]) #X_in(N,T,H)
 
     # cell
     lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_unis, forget_bias=1.0, state_is_tuple=True)
-    # TODO: fnish this
+    # lstm cell is divided into two parts (c_state,m_state)
+    _init_state = lstm_cell.zero_state(batch_size, dtype=tf.float32)
+
+    # states (c_state, m_state) for the last timestep
+    # output is a list for all timesteps
+    # time_major表示X_in中timestep的维度是不是第一个维度（0） 如果不是，那么就设置为False
+
+    outputs, states = tf.nn.dynamic_rnn(lstm_cell, X_in, initial_state=_init_state, time_major=False)
 
     # hidden layer for output as the final results
 
-    results = None
+    # Method 1
+    results = tf.matmul(states[1], weights['out']) + biases['out']
+
+    # Method 2
+    # outputs = tf.unstack(tf.transpose(outputs, [1,0,2]))
+    # results = tf.matmul(outputs[-1], weights['out']) + biases['out']
+
     return results
 
 pred = RNN(x,weights, biases)
-loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y, logis=pred))
+loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=pred))
 train_op = tf.train.AdamOptimizer(lr).minimize(loss)
 
 correct_pred = tf.equal(tf.argmax(pred, axis=1), tf.argmax(y, axis=1))
-accuracy = tf.reduce_mean(correct_pred)
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
 init = tf.global_variables_initializer()
 
@@ -72,6 +85,7 @@ with tf.Session() as sess:
     while step * batch_size < iterations:
         batch_xs, batch_ys = mnist.train.next_batch(batch_size)
         batch_xs = batch_xs.reshape([batch_size, n_steps, n_inputs])
+
         sess.run([train_op], feed_dict={
             x: batch_xs,
             y: batch_ys
