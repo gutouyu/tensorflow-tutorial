@@ -20,7 +20,7 @@
 - [x] MLP
 - [ ] CNN
 - [x] RNN
-- [ ] LSTM
+- [x] LSTM
 
 ### Tasks
 - [x] Classification
